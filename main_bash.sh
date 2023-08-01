@@ -50,7 +50,7 @@ sudo mkdir -p /opt/nginx-proxy-manager/data
 sudo chown 1000:1000 /opt/nginx-proxy-manager/data
 
 # Create the Docker Compose file for Nginx Proxy Manager
-cat << EOF > docker-compose.yml
+cat << EOF > nginx-compose.yml
 version: "3"
 
 services:
@@ -66,9 +66,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=your_timezone_here  # Replace with your timezone, e.g., "America/New_York"
+      - TZ=Europe/Stockholm  # Replace with your timezone, e.g., "America/New_York"
 
 EOF
+#Docker run Nginx
+docker-compose -f nginx-compose.yml up -d
 
 # Create the Docker Compose file for Dashy
 cat << EOF > dashy-compose.yml
@@ -84,6 +86,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
 EOF
+
+docker-compose -f dashy-compose.yml up -d
 
 echo "Samba, Docker, Docker Compose, Nginx Proxy Manager, and Dashy Docker Compose files have been created."
 # Update package list
