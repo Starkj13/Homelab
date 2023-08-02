@@ -8,11 +8,21 @@ sudo apt install samba -y
 sudo useradd -m administrator
 sudo smbpasswd -a administrator
 
+username=$(whoami)
+#folder making
+mkdir "$(eval echo ~$username)/share"
+mkdir "$(eval echo ~$username)/sonarr"
+mkdir "$(eval echo ~$username)/radarr"
+mkdir "$(eval echo ~$username)/pingvinshare"
+mkdir "$(eval echo ~$username)/jackett"
+mkdir "$(eval echo ~$username)/dashy"
+
+
 # Replace "folder_path" with the actual path of the folder you want to share
-folder_path="/path/to/your/folder"
+folder_path="$(eval echo ~$username)/share"
 
 # Replace "share_name" with the desired name for the Samba share
-share_name="YourShareName"
+share_name="share"
 
 # Replace "administrator_user" with the name of the administrator user
 administrator_user="administrator"
@@ -66,7 +76,6 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/Stockholm  # Replace with your timezone, e.g., "America/New_York"
 
 EOF
 #Docker run Nginx
@@ -82,8 +91,8 @@ services:
     image: lissy93/dashy
     container_name: Dashy
     # Pass in your config file below, by specifying the path on your host machine
-    # volumes:
-      # - /root/my-config.yml:/app/public/conf.yml
+     volumes:
+       - "$(eval echo ~$username)/dashy/config/conf.yml"
     ports:
       - 4000:80
     # Set any environmental variables
@@ -117,8 +126,8 @@ services:
     ports:
       - "9117:9117"
     volumes:
-      - /path/to/config:/config
-      - /path/to/downloads:/downloads
+      - "$(eval echo ~$username)/jackett/config:/config"
+      - "$(eval echo ~$username)/jackett/downloads:/downloads"
 
 EOF
 
@@ -129,16 +138,18 @@ version: '3.8'
 services:
   pingvin-share:
     image: stonith404/pingvin-share
+    container_name: pingvin-share
     restart: unless-stopped
     ports:
       - 3000:3000
     volumes:
-      - "./data:/opt/app/backend/data"
-      - "./data/images:/opt/app/frontend/public/img"
+      - "$(eval echo ~$username)/pingvinshare/omdata:/opt/app/backend/data"
+      - "$(eval echo ~$username)/pingvinshare/data/images:/opt/app/frontend/public/img"
 
 EOF
 
 docker-compose -f pingvinshare-compose.yml up -d
+
 
 cat << EOF > radarr-compose.yml
 version: "2.1"
@@ -149,11 +160,10 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
     volumes:
-      - /path/to/data:/config
-      - /path/to/movies:/movies #optional
-      - /path/to/downloadclient-downloads:/downloads #optional
+      - "$(eval echo ~$username)/radarr/data:/config"
+      - "$(eval echo ~$username)/radarr/movies:/movies"
+      - "$(eval echo ~$username)/radarr/downloadclient-downloads:/downloads"
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -172,9 +182,9 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - /path/to/data:/config
-      - /path/to/tvseries:/tv #optional
-      - /path/to/downloadclient-downloads:/downloads #optional
+      - "$(eval echo ~$username)/sonarr/data:/config"
+      - "$(eval echo ~$username)/sonarr/tvseries:/tv"
+      - "$(eval echo ~$username)/sonarr/downloadclient-downloads:/downloads"
     ports:
       - 8989:8989
     restart: unless-stopped
