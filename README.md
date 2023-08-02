@@ -8,15 +8,15 @@ Ubuntu based and in beta stage.
 ### Content
 The script installs
 
-✅Samba
-✅Docker
-✅Sonarr
-✅Radarr
-✅Jackett
-✅Pingvinshare
-✅Dashy
-✅Nginx proxy manager 
-✅Jellyfin
+✅Samba<br>
+✅Docker<br>
+✅Sonarr<br>
+✅Radarr<br>
+✅Jackett<br>
+✅Pingvinshare<br>
+✅Dashy<br>
+✅Nginx proxy manager<br>
+✅Jellyfin<br>
 
 ### Installation
 For Ubuntu 
