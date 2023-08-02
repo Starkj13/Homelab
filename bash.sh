@@ -10,16 +10,16 @@ sudo smbpasswd -a administrator
 
 
 #folder making
-mkdir "$(eval echo ~$SUDO_User)/share"
-mkdir "$(eval echo ~$SUDO_User)/sonarr"
-mkdir "$(eval echo ~$SUDO_User)/radarr"
-mkdir "$(eval echo ~$SUDO_User)/pingvinshare"
-mkdir "$(eval echo ~$SUDO_User)/jackett"
-mkdir "$(eval echo ~$SUDO_User)/dashy"
+mkdir "$(eval echo ~$SUDO_USER)/share"
+mkdir "$(eval echo ~$SUDO_USER)/sonarr"
+mkdir "$(eval echo ~$SUDO_USER)/radarr"
+mkdir "$(eval echo ~$SUDO_USER)/pingvinshare"
+mkdir "$(eval echo ~$SUDO_USER)/jackett"
+mkdir "$(eval echo ~$SUDO_USER)/dashy"
 
 
 # Replace "folder_path" with the actual path of the folder you want to share
-folder_path="$(eval echo ~$SUDO_User)/share"
+folder_path="$(eval echo ~$SUDO_USER)/share"
 
 # Replace "share_name" with the desired name for the Samba share
 share_name="share"
@@ -90,9 +90,6 @@ services:
     # build: .
     image: lissy93/dashy
     container_name: Dashy
-    # Pass in your config file below, by specifying the path on your host machine
-     volumes:
-       - "$(eval echo ~$SUDO_User)/dashy/config/conf.yml"
     ports:
       - 4000:80
     # Set any environmental variables
@@ -126,8 +123,8 @@ services:
     ports:
       - "9117:9117"
     volumes:
-      - "$(eval echo ~$SUDO_User)/jackett/config:/config"
-      - "$(eval echo ~$SUDO_User)/jackett/downloads:/downloads"
+      - "$(eval echo ~$SUDO_USER)/jackett/config:/config"
+      - "$(eval echo ~$SUDO_USER)/jackett/downloads:/downloads"
 
 EOF
 
@@ -143,8 +140,8 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - "$(eval echo ~$SUDO_User)/pingvinshare/omdata:/opt/app/backend/data"
-      - "$(eval echo ~$SUDO_User)/pingvinshare/data/images:/opt/app/frontend/public/img"
+      - "$(eval echo ~$SUDO_USER)/pingvinshare/omdata:/opt/app/backend/data"
+      - "$(eval echo ~$SUDO_USER)/pingvinshare/data/images:/opt/app/frontend/public/img"
 
 EOF
 
@@ -161,9 +158,9 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - "$(eval echo ~$SUDO_User)/radarr/data:/config"
-      - "$(eval echo ~$SUDO_User)/radarr/movies:/movies"
-      - "$(eval echo ~$SUDO_User)/radarr/downloadclient-downloads:/downloads"
+      - "$(eval echo ~$SUDO_USER)/radarr/data:/config"
+      - "$(eval echo ~$SUDO_USER)/radarr/movies:/movies"
+      - "$(eval echo ~$SUDO_USER)/radarr/downloadclient-downloads:/downloads"
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -182,9 +179,9 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
     volumes:
-      - "$(eval echo ~$SUDO_User)/sonarr/data:/config"
-      - "$(eval echo ~$SUDO_User)/sonarr/tvseries:/tv"
-      - "$(eval echo ~$SUDO_User)/sonarr/downloadclient-downloads:/downloads"
+      - "$(eval echo ~$SUDO_USER)/sonarr/data:/config"
+      - "$(eval echo ~$SUDO_USER)/sonarr/tvseries:/tv"
+      - "$(eval echo ~$SUDO_USER)/sonarr/downloadclient-downloads:/downloads"
     ports:
       - 8989:8989
     restart: unless-stopped
