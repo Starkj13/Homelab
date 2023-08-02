@@ -211,6 +211,9 @@ apt install -y jellyfin
 # Add a user 'jellyfin' to control the service
 useradd -r -s /bin/nologin jellyfin
 
+# Add user 'jellyfin' to usergroup
+usermod -aG $(id -gn $SUDO_USER) jellyfin
+
 # Give ownership of the Jellyfin data directory to 'jellyfin' user
 chown -R jellyfin:jellyfin /var/lib/jellyfin
 
