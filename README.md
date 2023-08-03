@@ -17,6 +17,7 @@ The script installs
 ✅Dashy<br>
 ✅Nginx proxy manager<br>
 ✅Jellyfin<br>
+✅Watchtower<br>
 
 ### Installation
 For Ubuntu 
