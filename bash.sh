@@ -59,7 +59,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo mkdir -p /opt/nginx-proxy-manager/data
 sudo chown 1000:1000 /opt/nginx-proxy-manager/data
 
-# Create the Docker Compose file for Nginx Proxy Manager
+# Nginx Proxy Manager
 cat << EOF > nginx-compose.yml
 version: "3"
 
@@ -78,10 +78,10 @@ services:
       - PGID=1000
 
 EOF
-#Docker run Nginx
+# Docker run Nginx
 docker-compose -f nginx-compose.yml up -d
 
-# Create the Docker Compose file for Dashy
+# Dashy
 cat << EOF > dashy-compose.yml
 version: "3.8"
 services:
@@ -112,6 +112,7 @@ EOF
 
 docker-compose -f dashy-compose.yml up -d
 
+# Jackett
 cat << EOF > jackett-compose.yml
 version: "3.8"
 
@@ -130,6 +131,7 @@ EOF
 
 docker-compose -f jackett-compose.yml up -d
 
+# Pingvinshare
 cat << EOF > pingvinshare-compose.yml
 version: '3.8'
 services:
@@ -147,7 +149,7 @@ EOF
 
 docker-compose -f pingvinshare-compose.yml up -d
 
-
+# Radarr
 cat << EOF > radarr-compose.yml
 version: "2.1"
 services:
@@ -168,6 +170,7 @@ EOF
 
 docker-compose -f radarr-compose.yml up -d
 
+# Sonarr
 cat << EOF > sonarr-compose.yml
 version: "2.1"
 services:
@@ -189,6 +192,19 @@ services:
 EOF
 
 docker-compose -f sonarr-compose.yml up -d
+
+# Setting up folder access
+docker exec -i radarr sh << EOF
+  echo chown abc movies
+  echo chown abc movies
+EOF
+docker exec -i sonarr sh << EOF
+  echo chown abc tv
+  echo chown abc downloads
+EOF
+
+#Watchtower
+docker run -d --name watchtower --restart=always -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower
 
 # Update package list
 apt update
