@@ -194,14 +194,10 @@ EOF
 docker-compose -f sonarr-compose.yml up -d
 
 # Setting up folder access
-docker exec -i radarr sh << EOF
-  echo chown abc movies
-  echo chown abc movies
-EOF
-docker exec -i sonarr sh << EOF
-  echo chown abc tv
-  echo chown abc downloads
-EOF
+docker exec -it radarr chown abc movies
+docker exec -it radarr chown abc downloads
+docker exec -it sonarr chown abc tv
+docker exec -it sonarr chown abc downloads
 
 #Watchtower
 docker run -d --name watchtower --restart=always -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower
