@@ -16,6 +16,7 @@ mkdir "$(eval echo ~$SUDO_USER)/radarr"
 mkdir "$(eval echo ~$SUDO_USER)/pingvinshare"
 mkdir "$(eval echo ~$SUDO_USER)/jackett"
 mkdir "$(eval echo ~$SUDO_USER)/dashy"
+mkdir "$(eval echo ~$SUDO_USER)/qbittorrent"
 
 
 # Replace "folder_path" with the actual path of the folder you want to share
@@ -193,6 +194,28 @@ EOF
 
 docker-compose -f sonarr-compose.yml up -d
 
+# Qbittorrent
+cat << EOF > qbittorrent-compose.yml
+version: '3'
+services:
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=1000   # Set your user ID
+      - PGID=1000   # Set your group ID
+      - TZ=Europe/Stockholm   # Set your timezone, e.g., America/New_York
+    volumes:
+      - "$(eval echo ~$SUDO_USER)/qbittorrent/config:/config
+      - "$(eval echo ~$SUDO_USER)/qbittorrent/downloads:/downloads
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+
+EOF
+
+docker-compose -f qbittorrent-compose.yml up -d
+
 # Setting up folder access
 docker exec -i -t radarr chown abc movies
 docker exec -i -t radarr chown abc downloads
@@ -238,20 +261,4 @@ systemctl enable jellyfin
 # Print the URL to access Jellyfin
 echo "Jellyfin is installed and running. You can access it by visiting: http://localhost:8096/"
 
-sudo apt update
 
-# Install qBittorrent-nox
-sudo apt install -y qbittorrent-nox
-
-# Start qBittorrent-nox service
-sudo systemctl start qbittorrent-nox
-
-# Enable qBittorrent-nox to start on boot
-sudo systemctl enable qbittorrent-nox
-
-# Set up web interface credentials
-USERNAME="admin"
-PASSWORD="changeme"
-
-# Configure qBittorrent web interface settings
-qbittorrent-nox --webui-port=8080 --webui-username=$USERNAME --webui-password=$PASSWORD
