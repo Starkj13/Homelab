@@ -13,6 +13,7 @@ The script installs
 ✅Sonarr<br>
 ✅Radarr<br>
 ✅Jackett<br>
+✅Qbittorrent<br>
 ✅Pingvinshare<br>
 ✅Dashy<br>
 ✅Nginx proxy manager<br>
