@@ -194,10 +194,10 @@ EOF
 docker-compose -f sonarr-compose.yml up -d
 
 # Setting up folder access
-docker exec -it radarr chown abc movies
-docker exec -it radarr chown abc downloads
-docker exec -it sonarr chown abc tv
-docker exec -it sonarr chown abc downloads
+docker exec -i -t radarr chown abc movies
+docker exec -i -t radarr chown abc downloads
+docker exec -i -t sonarr chown abc tv
+docker exec -i -t sonarr chown abc downloads
 
 #Watchtower
 docker run -d --name watchtower --restart=always -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower
@@ -237,3 +237,22 @@ systemctl enable jellyfin
 
 # Print the URL to access Jellyfin
 echo "Jellyfin is installed and running. You can access it by visiting: http://localhost:8096/"
+
+sudo apt update
+sudo apt upgrade
+
+# Install qBittorrent-nox
+sudo apt install -y qbittorrent-nox
+
+# Start qBittorrent-nox service
+sudo systemctl start qbittorrent-nox
+
+# Enable qBittorrent-nox to start on boot
+sudo systemctl enable qbittorrent-nox
+
+# Set up web interface credentials
+USERNAME="admin"
+PASSWORD="changeme"
+
+# Configure qBittorrent web interface settings
+qbittorrent-nox --webui-port=8080 --webui-username=$USERNAME --webui-password=$PASSWORD
