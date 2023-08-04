@@ -239,7 +239,6 @@ systemctl enable jellyfin
 echo "Jellyfin is installed and running. You can access it by visiting: http://localhost:8096/"
 
 sudo apt update
-sudo apt upgrade
 
 # Install qBittorrent-nox
 sudo apt install -y qbittorrent-nox
