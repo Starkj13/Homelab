@@ -24,7 +24,7 @@ The script installs
 ### Installation
 For Ubuntu 
 ```sh
-$ weget https://raw.githubusercontent.com/Starkj13/Homelab/main/bash.sh
+$ wget https://raw.githubusercontent.com/Starkj13/Homelab/main/bash.sh
 $ chmod +x bash.sh
 $ sudo ./bash.sh
 ```
