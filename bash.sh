@@ -72,7 +72,7 @@ sections:
     description: Get help with Dashy, raise a bug, or get in contact
     url: https://github.com/Lissy93/dashy/blob/master/.github/SUPPORT.md
     icon: far fa-hands-helping
-  "> $(eval echo ~$SUDO_USER)/dashy/config/$dashy_conf.yml
+  "> $(eval echo ~$SUDO_USER)/dashy/config/dashy_conf.yml
 
 # Replace "folder_path" with the actual path of the folder you want to share
 folder_path="$(eval echo ~$SUDO_USER)/share"
@@ -138,7 +138,7 @@ services:
     image: lissy93/dashy
     container_name: Dashy
       volumes:
-      - "$(eval echo ~$SUDO_USER)/dashy/config/$dashy_conf.yml:/app/public/conf.yml"
+      - "$(eval echo ~$SUDO_USER)/dashy/config/dashy_conf.yml:/app/public/conf.yml"
     ports:
       - 4000:80
     # Set any environmental variables
