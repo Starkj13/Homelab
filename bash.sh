@@ -129,8 +129,6 @@ services:
       - PGID=1000
 
 EOF
-# Docker run Nginx
-docker-compose -f nginx-compose.yml up -d
 
 # Dashy
 cat << EOF > dashy-compose.yml
@@ -160,8 +158,6 @@ services:
 
 EOF
 
-docker-compose -f dashy-compose.yml up -d
-
 # Jackett
 cat << EOF > jackett-compose.yml
 version: "3.8"
@@ -179,8 +175,6 @@ services:
 
 EOF
 
-docker-compose -f jackett-compose.yml up -d
-
 # Pingvinshare
 cat << EOF > pingvinshare-compose.yml
 version: '3.8'
@@ -196,8 +190,6 @@ services:
       - "$(eval echo ~$SUDO_USER)/pingvinshare/data/images:/opt/app/frontend/public/img"
 
 EOF
-
-docker-compose -f pingvinshare-compose.yml up -d
 
 # Radarr
 cat << EOF > radarr-compose.yml
@@ -217,8 +209,6 @@ services:
       - 7878:7878
     restart: unless-stopped
 EOF
-
-docker-compose -f radarr-compose.yml up -d
 
 # Sonarr
 cat << EOF > sonarr-compose.yml
@@ -241,8 +231,6 @@ services:
 
 EOF
 
-docker-compose -f sonarr-compose.yml up -d
-
 # Qbittorrent
 cat << EOF > qbittorrent-compose.yml
 version: '3'
@@ -263,8 +251,6 @@ services:
 
 EOF
 
-docker-compose -f qbittorrent-compose.yml up -d
-
 # Website
 cat << EOF > website-compose.yml
 version: "3"
@@ -278,7 +264,8 @@ services:
             - "$(eval echo ~$SUDO_USER)/website/src:/usr/share/nginx/html
 EOF
 
-docker-compose -f website-compose.yml up -d
+# Docker compose start
+docker-compose -f nginx-compose.yml up -d -f dashy-compose.yml up -d -f jackett-compose.yml up -d -f pingvinshare-compose.yml up -d -f radarr-compose.yml up -d -f sonarr-compose.yml up -d -f qbittorrent-compose.yml up -d -f website-compose.yml up -d
 
 # Setting up folder access
 docker exec -i -t radarr chown abc movies
