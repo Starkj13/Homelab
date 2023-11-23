@@ -248,7 +248,7 @@ cat << EOF > qbittorrent-compose.yml
 version: '3'
 services:
   qbittorrent:
-    image: linuxserver/qbittorrent
+    image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
     environment:
       - PUID=1000   # Set your user ID
