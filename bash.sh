@@ -265,7 +265,14 @@ services:
 EOF
 
 # Docker compose start
-docker-compose -f nginx-compose.yml up -d -f dashy-compose.yml up -d -f jackett-compose.yml up -d -f pingvinshare-compose.yml up -d -f radarr-compose.yml up -d -f sonarr-compose.yml up -d -f qbittorrent-compose.yml up -d -f website-compose.yml up -d
+docker-compose -f nginx-compose.yml up -d 
+docker-compose -f dashy-compose.yml up -d 
+docker-compose -f jackett-compose.yml up -d 
+docker-compose -f pingvinshare-compose.yml up -d 
+docker-compose -f radarr-compose.yml up -d 
+docker-compose -f sonarr-compose.yml up -d 
+docker-compose -f qbittorrent-compose.yml up -d 
+docker-compose -f website-compose.yml up -d
 
 # Setting up folder access
 docker exec -i -t radarr chown abc movies
