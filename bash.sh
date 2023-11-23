@@ -258,6 +258,7 @@ version: "3"
 services:
     client:
         image: nginx
+        container_name: nginx-website
         ports:
             - 8000:80
         volumes:
@@ -282,7 +283,7 @@ docker exec -i -t sonarr chown abc downloads
 
 
 #Watchtower
-docker run -d --name watchtower --restart=always -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower
+docker run -d --name watchtower --restart=unless-stopped -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower
 
 # Update package list
 apt update
