@@ -17,6 +17,7 @@ The script installs
 ✅Pingvinshare<br>
 ✅Dashy<br>
 ✅Nginx proxy manager<br>
+✅Nginx website<br>
 ✅Jellyfin<br>
 ✅Watchtower<br>
 
