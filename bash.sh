@@ -123,7 +123,7 @@ services:
       - "81:81"
       - "443:443"
     volumes:
-      - "$(eval echo ~$SUDO_USER)/nginx-proxy-manager/data:/config
+      - "$(eval echo ~$SUDO_USER)/nginx-proxy-manager/data:/config"
     environment:
       - PUID=1000
       - PGID=1000
@@ -138,7 +138,7 @@ services:
     image: lissy93/dashy
     container_name: Dashy
       volumes:
-      - "$(eval echo ~$SUDO_USER)/dashy/config/$dashy_conf.yml:/app/public/conf.yml
+      - "$(eval echo ~$SUDO_USER)/dashy/config/$dashy_conf.yml:/app/public/conf.yml"
     ports:
       - 4000:80
     # Set any environmental variables
@@ -241,10 +241,10 @@ services:
     environment:
       - PUID=1000   # Set your user ID
       - PGID=1000   # Set your group ID
-      - TZ=Europe/Stockholm   # Set your timezone, e.g., America/New_York
+      - TZ=Europe/Stockholm
     volumes:
-      - "$(eval echo ~$SUDO_USER)/qbittorrent/config:/config
-      - "$(eval echo ~$SUDO_USER)/qbittorrent/downloads:/downloads
+      - "$(eval echo ~$SUDO_USER)/qbittorrent/config:/config"
+      - "$(eval echo ~$SUDO_USER)/qbittorrent/downloads:/downloads"
     ports:
       - 8080:8080
     restart: unless-stopped
@@ -261,7 +261,7 @@ services:
         ports:
             - 8000:80
         volumes:
-            - "$(eval echo ~$SUDO_USER)/website/src:/usr/share/nginx/html
+            - "$(eval echo ~$SUDO_USER)/website/src:/usr/share/nginx/html"
 EOF
 
 # Docker compose start
