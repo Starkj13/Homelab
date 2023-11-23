@@ -137,8 +137,6 @@ services:
   dashy:
     image: lissy93/dashy
     container_name: Dashy
-    volumes:
-      - "$(eval echo ~$SUDO_USER)/dashy/config/$dashy_conf.yml:/app/public/conf.yml"
     ports:
       - 4000:80
     # Set any environmental variables
