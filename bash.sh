@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Varibles
+share_name="share"
+administrator_user="administrator"
+dashy_conf="dashy-conf"
+
 # Install Samba
 sudo apt update
 sudo apt install samba -y
@@ -8,25 +13,23 @@ sudo apt install samba -y
 sudo useradd -m administrator
 sudo smbpasswd -a administrator
 
-
 #folder making
 mkdir "$(eval echo ~$SUDO_USER)/share"
-mkdir "$(eval echo ~$SUDO_USER)/sonarr"
-mkdir "$(eval echo ~$SUDO_USER)/radarr"
-mkdir "$(eval echo ~$SUDO_USER)/pingvinshare"
-mkdir "$(eval echo ~$SUDO_USER)/jackett"
+mkdir "$(eval echo ~$SUDO_USER)/nginx-proxy-manager"
 mkdir "$(eval echo ~$SUDO_USER)/dashy"
+mkdir "$(eval echo ~$SUDO_USER)/jackett"
+mkdir "$(eval echo ~$SUDO_USER)/pingvinshare"
+mkdir "$(eval echo ~$SUDO_USER)/radarr"
+mkdir "$(eval echo ~$SUDO_USER)/sonarr"
 mkdir "$(eval echo ~$SUDO_USER)/qbittorrent"
+mkdir "$(eval echo ~$SUDO_USER)/website"
 
+#Make file for website
+echo "Hello world!" > $(eval echo ~$SUDO_USER)/website/src/index.html
 
 # Replace "folder_path" with the actual path of the folder you want to share
 folder_path="$(eval echo ~$SUDO_USER)/share"
 
-# Replace "share_name" with the desired name for the Samba share
-share_name="share"
-
-# Replace "administrator_user" with the name of the administrator user
-administrator_user="administrator"
 
 # Add a new share configuration to the Samba configuration file
 echo "[$share_name]" | sudo tee -a /etc/samba/smb.conf
@@ -73,7 +76,7 @@ services:
       - "81:81"
       - "443:443"
     volumes:
-      - /opt/nginx-proxy-manager/data:/config
+      - "$(eval echo ~$SUDO_USER)/nginx-proxy-manager/data:/config
     environment:
       - PUID=1000
       - PGID=1000
@@ -87,18 +90,17 @@ cat << EOF > dashy-compose.yml
 version: "3.8"
 services:
   dashy:
-    # To build from source, replace 'image: lissy93/dashy' with 'build: .'
-    # build: .
     image: lissy93/dashy
     container_name: Dashy
+      volumes:
+      - "$(eval echo ~$SUDO_USER)/dashy/config/$dashy_conf.yml:/app/public/conf.yml
     ports:
       - 4000:80
     # Set any environmental variables
     environment:
       - NODE_ENV=production
-    # Specify your user ID and group ID. You can find this by running `id -u` and `id -g`
-    #  - UID=1000
-    #  - GID=1000
+      - UID=1000
+      - GID=1000
     # Specify restart policy
     restart: unless-stopped
     # Configure healthchecks
@@ -216,11 +218,26 @@ EOF
 
 docker-compose -f qbittorrent-compose.yml up -d
 
+cat << EOF > website-compose.yml
+version: "3"
+
+services:
+    client:
+        image: nginx
+        ports:
+            - 8000:80
+        volumes:
+            - "$(eval echo ~$SUDO_USER)/website/src:/usr/share/nginx/html
+EOF
+
+docker-compose -f website-compose.yml up -d
+
 # Setting up folder access
 docker exec -i -t radarr chown abc movies
 docker exec -i -t radarr chown abc downloads
 docker exec -i -t sonarr chown abc tv
 docker exec -i -t sonarr chown abc downloads
+
 
 #Watchtower
 docker run -d --name watchtower --restart=always -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower
